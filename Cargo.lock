@@ -44,7 +44,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b122dace8e2f9ed8242cb18ca3be5895379261b259309fbbb6e71abc6fa7d0e3"
 
 [[package]]
-name = "bip85"
+name = "bip85_password"
 version = "0.1.0"
 dependencies = [
  "base64",

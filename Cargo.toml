@@ -1,5 +1,5 @@
 [package]
-name = "bip85"
+name = "bip85_password"
 version = "0.1.0"
 edition = "2021"
 
