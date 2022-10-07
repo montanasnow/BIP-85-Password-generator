@@ -5,7 +5,7 @@
 
 Generate passwords of a given length based on the propsal to modify BIP 85
 
-* bip85_password <XPRV>
+* 'bip85_password <XPRV>'
 
 Based on https://coldcard.com/docs/bip85-passwords and https://github.com/scgbckbone/bips/blob/passwords/bip-0085.mediawiki#PWD and https://github.com/scgbckbone/btc-hd-wallet/blob/master/tests/test_bip85.py
 
