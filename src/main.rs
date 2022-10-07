@@ -32,19 +32,21 @@ fn main() {
     let args = Args::parse();
 
     println!("\n");
-    println!("    __________._____________            ______   ________    __________                                                ___                                               __                ");
+    println!("    ________________________            ______   ________    __________                                                ___                                               __                ");
     println!("    \\______   \\   \\______   \\          /  __  \\ |   ____/    \\______   \\_____    ______ ________  _  _____________  __| _/       ____   ____   ____   ________________ _/  |_  ___________ ");
     println!("     |    |  _/   ||     ___/  ______  >      < |____  \\      |     ___/\\__  \\  /  ___//  ___/\\ \\/ \\/ /  _ \\_  __ \\/ __ |       / ___\\_/ __ \\ /    \\_/ __ \\_  __ \\__  \\\\   __\\/  _ \\_  __ \\");
     println!("     |    |   \\   ||    |     /_____/ /   --   \\/       \\     |    |     / __ \\_\\___ \\ \\___ \\  \\     (  <_> )  | \\/ /_/ |      / /_/  >  ___/|   |  \\  ___/|  | \\// __ \\|  | (  <_> )  | \\/");
     println!("     |______  /___||____|             \\______  /______  /     |____|    (____  /____  >____  >  \\/\\_/ \\____/|__|  \\____ |      \\___  / \\___  >___|  /\\___  >__|  (____  /__|  \\____/|__|   ");
     println!("            \\/                               \\/       \\/                     \\/     \\/     \\/                          \\/     /_____/      \\/     \\/     \\/           \\/                   ");
+    println!("\n");
 
-    // println!("xpriv {:?}", args.xprv);
-    println!("pwd_len {:?}", args.pwd_len);
-    println!("index {:?}", args.index);
+    println!("    XPRV:   {}", args.xprv);
+    println!("    Length: {:?}", args.pwd_len);
+    println!("    Index:  {:?}", args.index);
 
     let secp = Secp256k1::new();
     let root = ExtendedPrivKey::from_str(&*args.xprv).unwrap();
+    // println!("EX {:?}", root.private_key.to_string());
 
     let path = DerivationPath::from(vec![
         ChildNumber::Hardened { index: 707764 },
@@ -56,7 +58,8 @@ fn main() {
 
     let entropyb = base64::encode(&data[0..64]);
     let password = entropyb[0..args.pwd_len as usize].to_string();
-    println!("\npassword: {}", &password);
+    println!("\n");
+    println!("Password: {}", &password);
     println!("\n");
 }
 
@@ -65,6 +68,10 @@ fn derive<C: secp256k1::Signing, P: AsRef<[ChildNumber]>>(
     root: &ExtendedPrivKey,
     path: &P,
 ) -> Vec<u8> {
+    //     if index >= 0x80000000 {
+    //         return Err(Error::InvalidIndex(index));
+    //     }
+
     const BIP85_CHILD_NUMBER: ChildNumber = ChildNumber::Hardened { index: 83696968 };
     let bip85_root = root.ckd_priv(&secp, BIP85_CHILD_NUMBER).unwrap();
     let derived = bip85_root.derive_priv(&secp, &path).unwrap();
