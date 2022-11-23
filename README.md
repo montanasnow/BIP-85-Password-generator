@@ -12,7 +12,7 @@ Options:
 * -L password length
 * -I index
 
-The password length should be between 20 and 86 per the spec, but the minimum length is not enforced.
+The password length should be between 20 and 86 per the spec, but the minimum length is not enforced. The index must be less than 2147483648 (2^31)
 
 Example:
 * `bip85_password xprv9s21ZrQH143K2LBWUUQRFXhucrQqBpKdRRxNVq2zBqsx8HVqFk2uYo8kmbaLLHRdqtQpUm98uKfu3vca1LqdGhUtyoFnCNkfmXRyPXLjbKb -L 15 -I 20 `
@@ -33,7 +33,7 @@ Password length 21, index 0
 `Password length 24, index 0
 `vtV6sdNQTKpuefUMOHOKwUp1`
 
-Password length 32, index 1234
+Password length 32, index 1234 (from https://github.com/scgbckbone/btc-hd-wallet/blob/master/tests/test_bip85.py)
 `mBhJgXCJd6IpdOu1cc/D1wU+5sxj/1tK`
 
 Password length 64, index 1234
