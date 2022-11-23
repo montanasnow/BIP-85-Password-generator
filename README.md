@@ -5,7 +5,17 @@
 
 Generate passwords of a given length based on the propsal to modify BIP 85
 
+Must supply an extended private key
 * `bip85_password <XPRV>`
+
+Options 
+-L password length
+-I index
+
+Example,
+* `bip85_password.exe xprv9s21ZrQH143K2LBWUUQRFXhucrQqBpKdRRxNVq2zBqsx8HVqFk2uYo8kmbaLLHRdqtQpUm98uKfu3vca1LqdGhUtyoFnCNkfmXRyPXLjbKb -L 15 -I 20 `
+
+gGenerates password m0i9JxW/0X7EJ2a
 
 Based on https://coldcard.com/docs/bip85-passwords and https://github.com/scgbckbone/bips/blob/passwords/bip-0085.mediawiki#PWD and https://github.com/scgbckbone/btc-hd-wallet/blob/master/tests/test_bip85.py
 
