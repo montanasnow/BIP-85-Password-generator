@@ -6,6 +6,7 @@ use bitcoin::util::bip32::DerivationPath;
 use bitcoin::util::bip32::ExtendedPrivKey;
 use clap::Parser;
 use rand_core::OsRng;
+// use std::io;
 use std::str::FromStr;
 
 #[derive(Parser)]
@@ -13,8 +14,6 @@ use std::str::FromStr;
 
 // #[clap(about, version, author)]
 struct Args {
-    xprv: String,
-
     #[clap(short = 'L', long, default_value = "21")]
     pwd_len: u32,
 
@@ -34,28 +33,36 @@ fn main() {
     println!("            \\/                                                            \\/     \\/     \\/                          \\/          \\/     \\/     \\/     \\/           \\/                   ");
     println!("\n");
     println!("     https://github.com/montanasnow/BIP-85-Password-generator");
-    println!("     Derives a deterministic password from the key nor mnemonic phrase based on BIP-85");
-    println!("     Please provide a BIP-32 root key (xprv...) or a BIP-39 mnemonic.");
+    println!(
+        "     Derives a deterministic password from the key nor mnemonic phrase based on BIP-85"
+    );
     println!("     Options: -L for password length (default 21) and -I index (default 0)");
+    println!("     Enter a BIP-32 root key (xprv...) or a BIP-39 mnemonic.");
     println!("     Based on https://coldcard.com/docs/bip85-passwords and https://github.com/scgbckbone/bips/blob/passwords/bip-0085.mediawiki#PWD and https://github.com/scgbckbone/btc-hd-wallet/blob/master/tests/test_bip85.py");
-    println!("     The software is provided "AS-IS!", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, ");
+    println!("     The software is provided 'AS-IS!', without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, ");
     println!("     fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability,");
     println!("     whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software. ");
     println!("     Not for use in Europe or socialist countries");
     println!("\n");
 
-    let root_xprv = if !args.xprv.is_empty() && args.xprv.starts_with("xprv") {
-        println!("     XPRV:            {}", &args.xprv);
-        ExtendedPrivKey::from_str(&*args.xprv).unwrap()
-        println!("Enter your name :");
-        let b1 = std::io::stdin().read_line(&mut line).unwrap();
-    } else if !args.xprv.is_empty() {
-        println!("     Mnemonic:        {}", &args.xprv);
-        let mnemonic = Mnemonic::new(&args.xprv, Default::default()).unwrap();
+    println!("Enter a BIP-32 root key (xprv...) or BIP-39 mnemonic");
+    let mut line = String::new();
+    std::io::stdin().read_line(&mut line).unwrap();
+    // println!("Hello , {}", line);
+
+    // let b1 = std::io::stdin().read_line(&mut line).unwrap();
+    let root_xprv = if line.starts_with("xprv") {
+        println!("     XPRV:            {}", line);
+        ExtendedPrivKey::from_str(&line.as_str().trim()).unwrap()
+    } else if !line.as_str().trim().is_empty() {
+        println!("     Mnemonic:        {}", &line);
+        let mnemonic = Mnemonic::new(&line.as_str().trim(), Default::default()).unwrap();
         let seed = mnemonic.to_seed("");
         ExtendedPrivKey::from_str(&XPrv::new(&seed).unwrap().to_string(Prefix::XPRV)).unwrap()
     } else {
         let mnemonic = Mnemonic::random(&mut OsRng, Default::default());
+        println!("     Mnemonic:        {}", &mnemonic.phrase());
+
         let seed = mnemonic.to_seed("");
         ExtendedPrivKey::from_str(&XPrv::new(&seed).unwrap().to_string(Prefix::XPRV)).unwrap()
     };
